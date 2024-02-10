@@ -27,6 +27,10 @@ export default class TodoCard extends Component {
     }
   }
 
+  componentWillUnmount() {
+    localStorage.removeItem("todos");
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     const { text, todos } = this.state;
@@ -42,6 +46,14 @@ export default class TodoCard extends Component {
   handleChange = (e) => {
     this.setState({
       text: e.target.value,
+    });
+  };
+
+  handleDelete = (index) => {
+    const updatedTodos = [...this.state.todos];
+    updatedTodos.splice(index, 1);
+    this.setState({
+      todos: updatedTodos,
     });
   };
   render() {
@@ -71,7 +83,7 @@ export default class TodoCard extends Component {
             </Form.Group>
           </Form>
         </FormContainer>
-        <TodoShow todos={this.state.todos} />
+        <TodoShow todos={this.state.todos} onDelete={this.handleDelete} />
       </Container>
     );
   }
